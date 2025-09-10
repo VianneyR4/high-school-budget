@@ -7,7 +7,13 @@ import {
   Typography,
   Box,
   Alert,
-  CircularProgress
+  CircularProgress,
+  TableContainer,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
 } from '@mui/material';
 import { AccountBalance } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
@@ -105,18 +111,71 @@ const Login = () => {
               <Typography variant="h6" gutterBottom>
                 Demo Accounts:
               </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Admin:</strong> admin@school.edu / password123
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Math Dept:</strong> math.head@school.edu / password123
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Science Dept:</strong> science.head@school.edu / password123
-              </Typography>
-              <Typography variant="body2">
-                <strong>English Dept:</strong> english.head@school.edu / password123
-              </Typography>
+              
+              <TableContainer>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Role</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Course</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Access Level</TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }}>Password</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>ADMIN</TableCell>
+                      <TableCell>-</TableCell>
+                      <TableCell>admin@school.edu</TableCell>
+                      <TableCell>Full system access</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>DEPT_HEAD</TableCell>
+                      <TableCell>Math</TableCell>
+                      <TableCell>math.head@school.edu</TableCell>
+                      <TableCell>Department management</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>DEPT_HEAD</TableCell>
+                      <TableCell>Science</TableCell>
+                      <TableCell>science.head@school.edu</TableCell>
+                      <TableCell>Department management</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>DEPT_HEAD</TableCell>
+                      <TableCell>English</TableCell>
+                      <TableCell>english.head@school.edu</TableCell>
+                      <TableCell>Department management</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>TEACHER</TableCell>
+                      <TableCell>Math</TableCell>
+                      <TableCell>alice.smith@school.edu</TableCell>
+                      <TableCell>Course scheduling</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>TEACHER</TableCell>
+                      <TableCell>Science</TableCell>
+                      <TableCell>bob.wilson@school.edu</TableCell>
+                      <TableCell>Course scheduling</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>USER</TableCell>
+                      <TableCell>-</TableCell>
+                      <TableCell>user@school.edu</TableCell>
+                      <TableCell>Basic access & reporting</TableCell>
+                      <TableCell>password</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Box>
           </Box>
         </Paper>

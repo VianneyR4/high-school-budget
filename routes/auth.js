@@ -12,6 +12,8 @@ router.post('/login', [
   body('password').isLength({ min: 6 })
 ], async (req, res) => {
   try {
+
+    console.log("user  data: ", req.bodys)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -32,7 +34,7 @@ router.post('/login', [
       [email]
     );
 
-    if (result.rows.length === 0) {
+    if (result.rows.length <= 0) {
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'

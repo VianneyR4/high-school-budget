@@ -1,168 +1,101 @@
-# School Budget Management System
+# Enhanced School Budget Management System
 
-A simplified high school budget management system built with Node.js/Express backend and React frontend. This system allows administrators and department heads to manage department budgets, courses, and resource allocation.
+A comprehensive web application for managing high school budgets, course allocations, resource optimization, and advanced financial modeling with AI-powered optimization algorithms.
 
-## Features
+## 🚀 Enhanced Features
 
-### Core Functionality
-- **JWT Authentication** with role-based access (ADMIN, DEPARTMENT_HEAD)
-- **Department Budget Management** with real-time tracking
-- **Course Management** with cost calculations
-- **Budget Transfer System** between departments
-- **Metrics & Analytics** for cost per student and utilization
+### **Phase 1: Advanced User Management**
+- **Extended Role Hierarchy**: Admin > Department Head > Teacher > User
+- **Enhanced User Profiles**: Contact info, qualifications, employment types, hire dates
+- **Instructor Management**: Availability tracking, workload optimization
 
-### User Roles
-- **ADMIN**: Can view all departments, manage all courses, and see comprehensive metrics
-- **DEPARTMENT_HEAD**: Can manage only their department's courses and transfer budget
+### **Phase 2: Resource Optimization Engine**
+- **AI-Powered Optimization**: Mathematical models for optimal resource distribution
+- **Smart Resource Allocation**: Instructor-facility-course matching algorithms
+- **Cost Calculation Engine**: Advanced cost structures with differentials and depreciation
+- **Multiple Optimization Strategies**: Cost minimization, utilization maximization, balanced approach
 
-## Tech Stack
+### **Phase 3: Advanced Financial Modeling**
+- **Complex Cost Structures**: Instructor differentials, facility overhead, equipment depreciation
+- **Budget Forecasting**: Multi-scenario projections with confidence intervals
+- **Variance Analysis**: Real-time budget vs. actual tracking
+- **Cost-per-Credit-Hour Calculator**: Detailed financial metrics
 
-### Backend
-- Node.js with Express.js
-- PostgreSQL database
-- JWT authentication
-- bcryptjs for password hashing
-- Rate limiting and security middleware
+### **Phase 4: Temporal Scheduling System**
+- **Academic Calendar Integration**: Semester management with scheduling constraints
+- **Conflict Prevention**: Automated detection of instructor and facility conflicts
+- **Room Assignment Optimization**: Capacity and resource matching
+- **Equipment Reservation System**: Time-based equipment booking
 
-### Frontend
-- React 19
-- Material-UI (MUI) components
-- React Router for navigation
-- Axios for API calls
-- Context API for state management
+### **Phase 5: Advanced Reporting & Analytics**
+- **Comprehensive Dashboards**: Cross-departmental utilization metrics
+- **Trend Analysis**: Historical data analysis with predictive modeling
+- **Export Capabilities**: PDF, CSV, and Excel report generation
+- **Visualization Charts**: Interactive analytics and graphs
 
-## Quick Start
+## 🏗️ Technology Stack
 
-### Prerequisites
-- Node.js 16+
-- PostgreSQL 12+
-- npm or yarn
+- **Backend**: Node.js, Express.js
+- **Database**: PostgreSQL with advanced schema
+- **Authentication**: JWT, bcrypt
+- **Frontend**: React.js (separate client app)
+- **Security**: Helmet, CORS, Rate limiting
+- **Analytics**: Custom optimization algorithms
+- **Reporting**: PDF generation, CSV export
+- **Mathematical Models**: Linear programming, genetic algorithms
 
-### Database Setup
-1. Create PostgreSQL database:
-   ```bash
-   createdb school_budget
-   ```
+## 📁 Enhanced Project Structure
 
-2. Run the schema:
-   ```bash
-   psql -d school_budget -f database/schema.sql
-   ```
-
-### Backend Setup
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Configure environment:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
-   ```
-
-3. Start the server:
-   ```bash
-   npm run dev
-   ```
-
-The backend will run on http://localhost:3001
-
-### Frontend Setup
-1. Navigate to client directory:
-   ```bash
-   cd client
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the React app:
-   ```bash
-   npm start
-   ```
-
-The frontend will run on http://localhost:3000
-
-### Full Development Setup
-Run both backend and frontend simultaneously:
-```bash
-npm run dev:full
+```
+school-budget-demo/
+├── config/
+│   └── database.js              # Database configuration
+├── database/
+│   ├── schema.sql              # Enhanced database schema
+│   └── sample_data.sql         # Comprehensive sample data
+├── middleware/
+│   └── auth.js                 # Authentication middleware
+├── models/                     # NEW: Optimization algorithms
+│   ├── OptimizationAlgorithm.js # Core optimization logic
+│   ├── CostCalculator.js       # Advanced cost calculations
+│   └── ResourceAllocator.js    # Smart resource distribution
+├── routes/
+│   ├── auth.js                 # Authentication routes
+│   ├── departments.js          # Department management
+│   ├── courses.js              # Course management
+│   ├── transfers.js            # Budget transfer routes
+│   ├── metrics.js              # Analytics endpoints
+│   ├── optimization.js         # NEW: Optimization API
+│   ├── facilities.js           # NEW: Facility management
+│   ├── equipment.js            # NEW: Equipment & depreciation
+│   ├── scheduling.js           # NEW: Course scheduling
+│   ├── reports.js              # NEW: Advanced reporting
+│   └── forecasting.js          # NEW: Budget forecasting
+├── client/                     # React frontend application
+├── server.js                   # Enhanced main server
+├── package.json               # Updated dependencies
+└── README.md                  # This enhanced documentation
 ```
 
-## API Endpoints
+## 🔑 Test Accounts
 
-### Authentication
-- `POST /api/auth/login` - User login
+The system comes with pre-configured test accounts for all user roles:
 
-### Departments
-- `GET /api/departments` - Get departments (role-based access)
-- `GET /api/departments/:id` - Get single department
+| Email | Password | Role | Department | Access Level |
+|-------|----------|------|------------|--------------|
+| admin@school.edu | password | ADMIN | All Departments | Full system access |
+| math.head@school.edu | password | DEPARTMENT_HEAD | Mathematics | Department management |
+| science.head@school.edu | password | DEPARTMENT_HEAD | Science | Department management |
+| english.head@school.edu | password | DEPARTMENT_HEAD | English | Department management |
+| alice.smith@school.edu | password | TEACHER | Mathematics | Course scheduling & resources |
+| bob.wilson@school.edu | password | TEACHER | Science | Course scheduling & resources |
+| user@school.edu | password | USER | Mathematics | Basic access & reporting |
 
-### Courses
-- `GET /api/courses` - Get courses (role-based access)
-- `POST /api/courses` - Create new course
-- `GET /api/courses/:id` - Get single course
-
-### Transfers
-- `GET /api/transfers` - Get budget transfers (role-based access)
-- `POST /api/transfers` - Create budget transfer
-
-### Metrics
-- `GET /api/metrics/cost-per-student` - Cost per student analysis
-- `GET /api/metrics/utilization` - Budget utilization metrics
-- `GET /api/metrics/summary` - Overall summary (admin only)
-
-## Database Schema
-
-### Tables
-- **users**: User accounts with roles and department assignments
-- **departments**: Department information and budgets
-- **courses**: Course details with cost calculations
-- **transfers**: Budget transfer records
-
-### Sample Data
-The system includes sample data with:
-- 5 departments (Math, Science, English, History, PE)
-- Demo users for each role
-- Sample courses with realistic costs
-
-## Demo Accounts
-
-| Role | Email | Password | Department |
-|------|-------|----------|------------|
-| Admin | admin@school.edu | password123 | All |
-| Dept Head | math.head@school.edu | password123 | Mathematics |
-| Dept Head | science.head@school.edu | password123 | Science |
-| Dept Head | english.head@school.edu | password123 | English |
-
-## Key Features
-
-### Dashboard
-- Department budget overview
-- Course count and allocation summary
-- Real-time budget utilization
-- Role-based data visibility
-
-### Course Management
-- Add courses with instructor and classroom costs
-- Automatic total cost calculation
-- Budget validation before course creation
-- Department-specific access control
-
-### Budget Transfers
-- Transfer funds between departments
-- Transaction history and audit trail
-- Reason tracking for transfers
-- Real-time budget updates
-
-### Metrics & Analytics
-- Cost per student analysis
-- Budget utilization percentages
-- Department efficiency comparisons
-- Visual indicators for budget health
+### Role Hierarchy & Permissions:
+- **ADMIN**: Complete system access, all departments, optimization algorithms
+- **DEPARTMENT_HEAD**: Department budget management, course oversight, reporting
+- **TEACHER**: Course scheduling, resource requests, availability management
+- **USER**: Basic reporting, limited resource viewing
 
 ## Security Features
 - JWT token authentication
@@ -173,23 +106,26 @@ The system includes sample data with:
 
 ## Development
 
-### Project Structure
+### Quick Start Guide
+
+1. **Start the server**: `npm run dev`
+2. **Access the API**: http://localhost:3001
+3. **Login with test accounts** (see Test Accounts section above)
+4. **Test endpoints** using the browser preview or API client
+
+### Frontend Development
+
+The React frontend is located in the `client/` directory with the following structure:
+
 ```
-school-budget-demo/
-├── server.js              # Express server entry point
-├── config/
-│   └── database.js        # PostgreSQL connection
-├── middleware/
-│   └── auth.js           # Authentication middleware
-├── routes/               # API route handlers
-├── database/
-│   └── schema.sql        # Database schema and sample data
-├── client/               # React frontend
-│   ├── src/
-│   │   ├── components/   # Reusable components
-│   │   ├── pages/        # Page components
-│   │   └── contexts/     # React contexts
-└── package.json
+client/
+├── src/
+│   ├── components/       # Reusable UI components
+│   ├── pages/           # Page components
+│   ├── contexts/        # React contexts for state management
+│   └── App.js          # Main application component
+├── public/             # Static assets
+└── package.json        # Frontend dependencies
 ```
 
 ### Building for Production
