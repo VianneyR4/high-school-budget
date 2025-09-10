@@ -146,7 +146,7 @@ const Courses = () => {
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h4">
-          Courses
+          Courses Budget Plannings
         </Typography>
         <Button
           variant="contained"
@@ -197,6 +197,20 @@ const Courses = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Course Cost Explanation */}
+      <Alert severity="info" sx={{ mb: 4 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          💰 Course Cost Analysis - Formula Explanation:
+        </Typography>
+        <Typography variant="body2" component="div">
+          • <strong>Expected Students:</strong> Projected enrollment for the course (used for planning and cost calculations)<br/>
+          • <strong>Instructor Cost:</strong> Cost for teaching staff (salary, benefits, hourly rates)<br/>
+          • <strong>Classroom Cost:</strong> Facility usage, utilities, equipment, and maintenance costs<br/>
+          • <strong>Total Cost:</strong> Instructor Cost + Classroom Cost (automatically calculated)<br/>
+          • <strong>Cost per Student:</strong> Total Cost ÷ Expected Students (efficiency metric for course planning)
+        </Typography>
+      </Alert>
 
       {/* Add Course Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>

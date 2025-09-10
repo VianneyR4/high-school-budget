@@ -74,8 +74,9 @@ INSERT INTO users (email, password_hash, role, department_id, first_name, last_n
 ('alice.smith@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 1, 'Alice', 'Smith', '555-1001', 'Math Building 210', 'MS Mathematics, 6 years experience', '2021-08-15', 'FULL_TIME', 68.00),
 ('bob.wilson@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 2, 'Bob', 'Wilson', '555-1002', 'Science Building 205', 'PhD Biology, 15 years experience', '2017-01-10', 'FULL_TIME', 78.00),
 ('carol.davis@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 3, 'Carol', 'Davis', '555-1003', 'Humanities Building 120', 'MA English, 4 years experience', '2022-08-20', 'PART_TIME', 55.00),
-('david.brown@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 4, 'David', 'Brown', '555-1004', 'Social Studies Building 180', 'MA History, 7 years experience', '2019-08-15', 'FULL_TIME', 62.00),
-('eva.garcia@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 5, 'Eva', 'Garcia', '555-1005', 'Physical Education Building', 'BS Kinesiology, 5 years experience', '2021-01-15', 'FULL_TIME', 58.00),
+('frank.miller@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 2, 'Frank', 'Miller', '555-1004', 'Science Building 208', 'PhD Chemistry, 8 years experience', '2019-09-01', 'FULL_TIME', 72.00),
+('david.brown@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 4, 'David', 'Brown', '555-1005', 'Social Studies Building 115', 'MA History, 10 years experience', '2018-01-15', 'FULL_TIME', 65.00),
+('user@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'USER', NULL, 'Regular', 'User', '555-2001', NULL, 'Student/Staff member', '2024-01-15', 'PART_TIME', NULL),
 ('frank.lee@school.edu', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER', 2, 'Frank', 'Lee', '555-1006', 'Science Building 220', 'MS Physics, 3 years experience', '2023-08-10', 'ADJUNCT', 45.00)
 ON CONFLICT (email) DO NOTHING;
 

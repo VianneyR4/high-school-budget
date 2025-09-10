@@ -13,7 +13,6 @@ router.post('/login', [
 ], async (req, res) => {
   try {
 
-    console.log("user  data: ", req.bodys)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -64,7 +63,19 @@ router.post('/login', [
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.json({
+
+    console.log("===== user data: ", {
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        department_id: user.department_id,
+        department_name: user.department_name
+      }
+    })
+
+    return res.json({
       success: true,
       message: 'Login successful',
       data: {

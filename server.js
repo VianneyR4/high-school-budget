@@ -15,6 +15,7 @@ const equipmentRoutes = require('./routes/equipment');
 const schedulingRoutes = require('./routes/scheduling');
 const reportsRoutes = require('./routes/reports');
 const forecastingRoutes = require('./routes/forecasting');
+const usersRoutes = require('./routes/users');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use('/api/equipment', equipmentRoutes);
 app.use('/api/schedules', schedulingRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/forecasting', forecastingRoutes);
+app.use('/api/users', usersRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

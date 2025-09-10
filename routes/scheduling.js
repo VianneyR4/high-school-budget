@@ -20,12 +20,14 @@ router.get('/', authenticateToken, async (req, res) => {
         u.first_name || ' ' || u.last_name as instructor_name,
         f.name as facility_name,
         f.type as facility_type,
-        d.name as department_name
+        d.name as department_name,
+        COUNT(ce.user_id) as assigned_count
       FROM course_schedules cs
       JOIN courses c ON cs.course_id = c.id
       JOIN departments d ON c.department_id = d.id
       LEFT JOIN users u ON cs.instructor_id = u.id
       LEFT JOIN facilities f ON cs.facility_id = f.id
+      LEFT JOIN course_enrollments ce ON cs.id = ce.schedule_id AND ce.status = 'ENROLLED'
       WHERE 1=1
     `;
     const queryParams = [];
@@ -67,7 +69,7 @@ router.get('/', authenticateToken, async (req, res) => {
       queryParams.push(status);
     }
 
-    query += ' ORDER BY cs.day_of_week, cs.start_time, c.name';
+    query += ' GROUP BY cs.id, c.name, u.first_name, u.last_name, f.name, f.type, d.name ORDER BY cs.day_of_week, cs.start_time, c.name';
 
     const result = await pool.query(query, queryParams);
 
@@ -477,6 +479,107 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to cancel schedule'
+    });
+  }
+});
+
+/**
+ * POST /api/schedules/:id/assign-users
+ * Assign users to a course schedule
+ */
+router.post('/:id/assign-users', [
+  authenticateToken,
+  body('user_ids').isArray()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { id } = req.params;
+    const { user_ids } = req.body;
+
+    // Verify schedule exists
+    const scheduleCheck = await pool.query('SELECT * FROM course_schedules WHERE id = $1', [id]);
+    if (scheduleCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Schedule not found'
+      });
+    }
+
+    // Clear existing assignments
+    await pool.query('DELETE FROM course_enrollments WHERE schedule_id = $1', [id]);
+
+    // Add new assignments
+    if (user_ids.length > 0) {
+      const insertQuery = `
+        INSERT INTO course_enrollments (schedule_id, user_id, enrollment_date, status)
+        VALUES ${user_ids.map((_, index) => `($1, $${index + 2}, CURRENT_DATE, 'ENROLLED')`).join(', ')}
+      `;
+      await pool.query(insertQuery, [id, ...user_ids]);
+    }
+
+    res.json({
+      success: true,
+      message: 'Users assigned successfully',
+      assigned_count: user_ids.length
+    });
+
+  } catch (error) {
+    console.error('User assignment error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to assign users'
+    });
+  }
+});
+
+/**
+ * GET /api/schedules/user/:userId
+ * Get schedules for a specific user
+ */
+router.get('/user/:userId', authenticateToken, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const query = `
+      SELECT 
+        cs.*,
+        c.name as course_name,
+        u.first_name || ' ' || u.last_name as instructor_name,
+        f.name as facility_name,
+        f.type as facility_type,
+        d.name as department_name,
+        ce.enrollment_date,
+        ce.status as enrollment_status
+      FROM course_schedules cs
+      JOIN course_enrollments ce ON cs.id = ce.schedule_id
+      JOIN courses c ON cs.course_id = c.id
+      JOIN departments d ON c.department_id = d.id
+      LEFT JOIN users u ON cs.instructor_id = u.id
+      LEFT JOIN facilities f ON cs.facility_id = f.id
+      WHERE ce.user_id = $1 AND ce.status = 'ENROLLED' AND cs.status != 'CANCELLED'
+      ORDER BY cs.day_of_week, cs.start_time
+    `;
+
+    const result = await pool.query(query, [userId]);
+
+    res.json({
+      success: true,
+      data: result.rows
+    });
+
+  } catch (error) {
+    console.error('User schedules fetch error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch user schedules'
     });
   }
 });

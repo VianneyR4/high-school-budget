@@ -2,7 +2,7 @@
 
 A comprehensive web application for managing high school budgets, course allocations, resource optimization, and advanced financial modeling with AI-powered optimization algorithms.
 
-## 🚀 Enhanced Features
+## Enhanced Features
 
 ### **Phase 1: Advanced User Management**
 - **Extended Role Hierarchy**: Admin > Department Head > Teacher > User
@@ -33,7 +33,7 @@ A comprehensive web application for managing high school budgets, course allocat
 - **Export Capabilities**: PDF, CSV, and Excel report generation
 - **Visualization Charts**: Interactive analytics and graphs
 
-## 🏗️ Technology Stack
+## Technology Stack
 
 - **Backend**: Node.js, Express.js
 - **Database**: PostgreSQL with advanced schema
@@ -44,7 +44,7 @@ A comprehensive web application for managing high school budgets, course allocat
 - **Reporting**: PDF generation, CSV export
 - **Mathematical Models**: Linear programming, genetic algorithms
 
-## 📁 Enhanced Project Structure
+## Enhanced Project Structure
 
 ```
 school-budget-demo/
@@ -77,7 +77,7 @@ school-budget-demo/
 └── README.md                  # This enhanced documentation
 ```
 
-## 🔑 Test Accounts
+## Test Accounts
 
 The system comes with pre-configured test accounts for all user roles:
 

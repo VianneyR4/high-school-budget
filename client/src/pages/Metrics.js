@@ -26,7 +26,6 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
 const Metrics = () => {
-  const { isAdmin } = useAuth();
   const [costPerStudent, setCostPerStudent] = useState([]);
   const [utilization, setUtilization] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -214,9 +213,22 @@ const Metrics = () => {
         </Table>
       </TableContainer>
 
+      {/* Cost per Student Explanation */}
+      <Alert severity="info" sx={{ mb: 4 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          📊 Cost per Student Analysis - Formula Explanation:
+        </Typography>
+        <Typography variant="body2" component="div">
+          • <strong>Total Students:</strong> Sum of expected students across all courses in the department<br/>
+          • <strong>Total Cost:</strong> Sum of instructor costs + classroom costs for all courses (Total Cost = Instructor Cost + Classroom Cost)<br/>
+          • <strong>Cost per Student:</strong> Total Cost ÷ Total Students (measures department efficiency)<br/>
+          • <strong>Efficiency Rating:</strong> High (&lt;$250), Medium ($250-$400), Low (&gt;$400) per student
+        </Typography>
+      </Alert>
+
       {/* Budget Utilization Table */}
-      <Typography variant="h5" gutterBottom>
-        Budget Utilization
+      <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+        Resource Utilization
       </Typography>
       
       <TableContainer component={Paper}>
@@ -260,6 +272,20 @@ const Metrics = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Resource Utilization Explanation */}
+      <Alert severity="info" sx={{ mb: 4 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          📈 Resource Utilization - Formula Explanation:
+        </Typography>
+        <Typography variant="body2" component="div">
+          • <strong>Total Budget:</strong> Department's allocated budget amount from the budget allocation process<br/>
+          • <strong>Allocated:</strong> Sum of all course costs (instructor + classroom costs) currently scheduled<br/>
+          • <strong>Remaining:</strong> Total Budget - Allocated (available funds for new courses/expenses)<br/>
+          • <strong>Utilization %:</strong> (Allocated ÷ Total Budget) × 100 (measures how much budget is being used)<br/>
+          • <strong>Color Coding:</strong> Green (&gt;80%), Orange (50-80%), Red (&lt;50%) utilization
+        </Typography>
+      </Alert>
     </Box>
   );
 };

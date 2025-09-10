@@ -10,6 +10,9 @@ import Dashboard from './pages/Dashboard';
 import Courses from './pages/Courses';
 import Transfers from './pages/Transfers';
 import Metrics from './pages/Metrics';
+import TeacherScheduling from './pages/TeacherScheduling';
+import UserCourses from './pages/UserCourses';
+import AdminRoleManagement from './pages/AdminRoleManagement';
 
 const theme = createTheme({
   palette: {
@@ -67,6 +70,36 @@ function App() {
                 <ProtectedRoute>
                   <Layout>
                     <Metrics />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher-scheduling"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <TeacherScheduling />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-courses"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <UserCourses />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/roles"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <AdminRoleManagement />
                   </Layout>
                 </ProtectedRoute>
               }

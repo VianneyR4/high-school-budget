@@ -19,7 +19,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
 const Dashboard = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, isUser } = useAuth();
   const [departments, setDepartments] = useState([]);
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);

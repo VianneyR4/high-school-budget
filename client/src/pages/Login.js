@@ -33,9 +33,13 @@ const Login = () => {
     setLoading(true);
 
     const result = await login(email, password);
-    
+
     if (result.success) {
-      navigate('/dashboard');
+      if (result.user.role === 'USER') {
+        navigate('/my-courses');
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       setError(result.message);
     }

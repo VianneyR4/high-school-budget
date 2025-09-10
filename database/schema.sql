@@ -218,6 +218,20 @@ CREATE TABLE IF NOT EXISTS academic_calendar (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Course enrollments table
+CREATE TABLE IF NOT EXISTS course_enrollments (
+    id SERIAL PRIMARY KEY,
+    schedule_id INTEGER NOT NULL REFERENCES course_schedules(id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    enrollment_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    status VARCHAR(50) DEFAULT 'ENROLLED' CHECK (status IN ('ENROLLED', 'DROPPED', 'COMPLETED', 'WITHDRAWN')),
+    grade VARCHAR(10),
+    completion_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(schedule_id, user_id)
+);
+
 -- Equipment reservations table
 CREATE TABLE IF NOT EXISTS equipment_reservations (
     id SERIAL PRIMARY KEY,
@@ -269,3 +283,6 @@ CREATE INDEX IF NOT EXISTS idx_academic_calendar_year_semester ON academic_calen
 CREATE INDEX IF NOT EXISTS idx_equipment_reservations_equipment ON equipment_reservations(equipment_id);
 CREATE INDEX IF NOT EXISTS idx_equipment_reservations_date ON equipment_reservations(reservation_date);
 CREATE INDEX IF NOT EXISTS idx_budget_variances_dept_period ON budget_variances(department_id, period_start, period_end);
+CREATE INDEX IF NOT EXISTS idx_course_enrollments_schedule ON course_enrollments(schedule_id);
+CREATE INDEX IF NOT EXISTS idx_course_enrollments_user ON course_enrollments(user_id);
+CREATE INDEX IF NOT EXISTS idx_course_enrollments_status ON course_enrollments(status);

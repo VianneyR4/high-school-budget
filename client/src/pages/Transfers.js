@@ -25,7 +25,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
 const Transfers = () => {
-  const { user, isDepartmentHead } = useAuth();
+  const { user, isDepartmentHead, isAdmin } = useAuth();
   const [transfers, setTransfers] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,9 +122,6 @@ const Transfers = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
-  const getAvailableDepartments = () => {
-    return departments.filter(dept => dept.id !== user.department_id);
-  };
 
   const getUserDepartment = () => {
     return departments.find(dept => dept.id === user.department_id);
@@ -150,7 +147,7 @@ const Transfers = () => {
         <Typography variant="h4">
           Budget Transfers
         </Typography>
-        {isDepartmentHead() && (
+        {(isDepartmentHead() || isAdmin()) && (
           <Button
             variant="contained"
             startIcon={<SwapHoriz />}
@@ -216,6 +213,21 @@ const Transfers = () => {
         </Table>
       </TableContainer>
 
+      {/* Budget Transfer Explanation */}
+      <Alert severity="info" sx={{ mb: 4 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          💸 Budget Transfer Analysis - Data Explanation:
+        </Typography>
+        <Typography variant="body2" component="div">
+          • <strong>Date:</strong> When the transfer was created and processed<br/>
+          • <strong>From Department:</strong> Source department losing budget funds (highlighted in red if your department)<br/>
+          • <strong>To Department:</strong> Destination department receiving budget funds (highlighted in green if your department)<br/>
+          • <strong>Amount:</strong> Dollar amount transferred between departments<br/>
+          • <strong>Reason:</strong> Justification or purpose for the budget transfer<br/>
+          • <strong>Created By:</strong> User who initiated and approved the transfer
+        </Typography>
+      </Alert>
+
       {/* Transfer Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle>Transfer Budget</DialogTitle>
@@ -234,17 +246,18 @@ const Transfers = () => {
           
           <TextField
             select
-            margin="dense"
-            label="To Department"
             fullWidth
-            variant="outlined"
+            label="Transfer To Department"
             value={formData.to_department_id}
             onChange={handleInputChange('to_department_id')}
-            sx={{ mb: 2 }}
+            margin="normal"
+            required
           >
-            {getAvailableDepartments().map((dept) => (
+            {departments
+              .filter(dept => dept.id !== user.department_id)
+              .map((dept) => (
               <MenuItem key={dept.id} value={dept.id}>
-                {dept.name}
+                {dept.name} (Budget: ${dept.budget?.toLocaleString() || 'N/A'})
               </MenuItem>
             ))}
           </TextField>

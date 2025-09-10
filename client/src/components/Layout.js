@@ -22,7 +22,9 @@ import {
   SwapHoriz,
   Analytics,
   Logout,
-  AccountBalance
+  AccountBalance,
+  Schedule,
+  AdminPanelSettings
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -40,9 +42,19 @@ const Layout = ({ children }) => {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-    { text: 'Courses', icon: <School />, path: '/courses' },
-    ...(isDepartmentHead() ? [{ text: 'Budget Transfer', icon: <SwapHoriz />, path: '/transfers' }] : []),
+    ...(user?.role === 'USER' ? [
+      { text: 'My Courses', icon: <School />, path: '/my-courses' }
+    ] : [
+      { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
+      { text: 'Courses', icon: <School />, path: '/courses' }
+    ]),
+    ...(user?.role === 'TEACHER' ? [
+      { text: 'Course Scheduling', icon: <Schedule />, path: '/teacher-scheduling' }
+    ] : []),
+    ...(isDepartmentHead() || isAdmin() ? [{ text: 'Budget Transfer', icon: <SwapHoriz />, path: '/transfers' }] : []),
+    ...(isAdmin() ? [
+      { text: 'Role Management', icon: <AdminPanelSettings />, path: '/admin/roles' }
+    ] : []),
     { text: 'Metrics', icon: <Analytics />, path: '/metrics' }
   ];
 
@@ -108,7 +120,7 @@ const Layout = ({ children }) => {
             Department
           </Typography>
           <Typography variant="body1" fontWeight="bold">
-            {user?.department_name || 'All Departments'}
+            {user?.department_name || isAdmin() ? 'All Departments' : 'No Department'}
           </Typography>
         </Box>
         <Divider />
