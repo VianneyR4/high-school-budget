@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import {
   Box,
   Typography,
@@ -32,6 +32,7 @@ const Transfers = () => {
   const [error, setError] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [formData, setFormData] = useState({
+    from_department_id: '',
     to_department_id: '',
     amount: '',
     reason: ''
@@ -63,6 +64,7 @@ const Transfers = () => {
 
   const handleOpenDialog = () => {
     setFormData({
+      from_department_id: user.department_id, // Always default to user's department
       to_department_id: '',
       amount: '',
       reason: ''
@@ -74,6 +76,7 @@ const Transfers = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setFormData({
+      from_department_id: '',
       to_department_id: '',
       amount: '',
       reason: ''
@@ -94,7 +97,7 @@ const Transfers = () => {
       setFormError('');
 
       const response = await axios.post('http://localhost:3001/api/transfers', {
-        from_department_id: user.department_id,
+        from_department_id: parseInt(formData.from_department_id),
         to_department_id: parseInt(formData.to_department_id),
         amount: parseFloat(formData.amount),
         reason: formData.reason
@@ -125,6 +128,10 @@ const Transfers = () => {
 
   const getUserDepartment = () => {
     return departments.find(dept => dept.id === user.department_id);
+  };
+
+  const getSelectedFromDepartment = () => {
+    return departments.find(dept => dept.id === parseInt(formData.from_department_id));
   };
 
   if (loading) {
@@ -159,13 +166,22 @@ const Transfers = () => {
       </Box>
 
       {/* Current Department Budget Info */}
-      {userDept && (
+      {userDept && !isAdmin() && (
         <Paper sx={{ p: 2, mb: 3, bgcolor: 'primary.50' }}>
           <Typography variant="h6" gutterBottom>
-            Your Department: {userDept.name}
+            {isAdmin() && openDialog && formData.from_department_id && getSelectedFromDepartment() 
+              ? `Selected Department: ${getSelectedFromDepartment().name}`
+              : `Your Department: ${userDept.name}`
+            }
           </Typography>
           <Typography variant="body1">
-            Available Budget: <strong>{formatCurrency(userDept.budget)}</strong>
+            Available Budget: <strong>
+              {formatCurrency(
+                isAdmin() && openDialog && formData.from_department_id && getSelectedFromDepartment()
+                  ? getSelectedFromDepartment().budget
+                  : userDept.budget
+              )}
+            </strong>
           </Typography>
         </Paper>
       )}
@@ -238,12 +254,52 @@ const Transfers = () => {
             </Alert>
           )}
           
-          <Alert severity="info" sx={{ mb: 2 }}>
-            Transferring from: <strong>{userDept?.name}</strong>
-            <br />
-            Available budget: <strong>{formatCurrency(userDept?.budget || 0)}</strong>
-          </Alert>
+          {formData.from_department_id && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              Transferring from: <strong>
+                {isAdmin() 
+                  ? (getSelectedFromDepartment()?.name || 'Select department')
+                  : userDept?.name
+                }
+              </strong>
+              <br />
+              Available budget: <strong>
+                {formatCurrency(
+                  isAdmin() 
+                    ? (getSelectedFromDepartment()?.budget || 0)
+                    : (userDept?.budget || 0)
+                )}
+              </strong>
+            </Alert>
+          )}
           
+          {isAdmin() ? (
+            <TextField
+              select
+              fullWidth
+              label="Transfer From Department"
+              value={formData.from_department_id}
+              onChange={handleInputChange('from_department_id')}
+              margin="normal"
+              required
+            >
+              {departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.id}>
+                  {dept.name} (Available Budget: ${dept.budget?.toLocaleString() || 'N/A'})
+                </MenuItem>
+              ))}
+            </TextField>
+          ) : (
+            <TextField
+              fullWidth
+              label="Transfer From Department"
+              value={userDept?.name || ''}
+              margin="normal"
+              disabled
+              helperText="You can only transfer from your own department"
+            />
+          )}
+
           <TextField
             select
             fullWidth
@@ -254,10 +310,10 @@ const Transfers = () => {
             required
           >
             {departments
-              .filter(dept => dept.id !== user.department_id)
+              .filter(dept => dept.id !== (isAdmin() ? parseInt(formData.from_department_id) : user.department_id))
               .map((dept) => (
               <MenuItem key={dept.id} value={dept.id}>
-                {dept.name} (Budget: ${dept.budget?.toLocaleString() || 'N/A'})
+                {dept.name} (Available Budget: ${dept.budget?.toLocaleString() || 'N/A'})
               </MenuItem>
             ))}
           </TextField>

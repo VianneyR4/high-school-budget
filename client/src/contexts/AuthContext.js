@@ -29,10 +29,16 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
+    const idpToken = localStorage.getItem('idp_access_token');
+    const idpUser = localStorage.getItem('idp_user');
     
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
+    } else if (idpToken && idpUser) {
+      // Handle IDP authentication
+      setToken(idpToken);
+      setUser(JSON.parse(idpUser));
     }
     setLoading(false);
   }, []);
@@ -65,9 +71,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithIdp = (idpUser, idpTokens) => {
+    // Store IDP tokens and user data
+    localStorage.setItem('idp_access_token', idpTokens.access_token);
+    if (idpTokens.refresh_token) {
+      localStorage.setItem('idp_refresh_token', idpTokens.refresh_token);
+    }
+    localStorage.setItem('idp_user', JSON.stringify(idpUser));
+    
+    // Set the current session
+    setToken(idpTokens.access_token);
+    setUser(idpUser);
+    
+    return { success: true, user: idpUser };
+  };
+
   const logout = () => {
+    // Clear both regular and IDP tokens
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('idp_access_token');
+    localStorage.removeItem('idp_refresh_token');
+    localStorage.removeItem('idp_user');
+    
     setToken(null);
     setUser(null);
     delete axios.defaults.headers.common['Authorization'];
@@ -81,6 +107,7 @@ export const AuthProvider = ({ children }) => {
     token,
     loading,
     login,
+    loginWithIdp,
     logout,
     isAuthenticated: !!token,
     isAdmin,

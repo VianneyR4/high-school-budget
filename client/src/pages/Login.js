@@ -13,9 +13,10 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  Divider
 } from '@mui/material';
-import { AccountBalance } from '@mui/icons-material';
+import { AccountBalance, Security } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,6 +48,41 @@ const Login = () => {
     setLoading(false);
   };
 
+  const handleIdpLogin = () => {
+    // Open IDP integration page in a new window
+    window.open('http://localhost:8080/idp-widget/index.html', 'idp-login', 'width=600,height=700,scrollbars=yes,resizable=yes');
+  };
+
+  // function AuthWidget() { 
+  //   const [user, setUser] = useState(null); 
+  //   const [tokens, setTokens] = useState(null); 
+  //   const widgetRef = useRef(null); 
+  //   const containerRef = useRef(null); 
+  //   useEffect(() => { 
+  //     if (containerRef.current && !widgetRef.current) {
+  //       widgetRef.current = new IdPWidget({ 
+  //         containerId: containerRef.current.id, 
+  //         apiBaseUrl: process.env.REACT_APP_IDP_URL, 
+  //         clientId: process.env.REACT_APP_CLIENT_ID, 
+  //         onSuccess: (user, tokens) => { 
+  //           // Update React state setUser(user); 
+  //           setTokens(tokens); 
+  //         }, 
+  //         onError: (error) => { 
+  //           console.error('Auth error:', error); 
+  //         } 
+  //       }); 
+  //     } 
+  //   }, []); 
+  //   return ( 
+  //     <div> 
+  //       <div ref={containerRef} id="react-idp-widget"></div> 
+  //       {user && <p>Welcome, {user.email}!</p>} 
+  //     </div> 
+  //   );
+  // }
+
+  
   return (
     <Container component="main" maxWidth="sm">
       <Box
@@ -108,6 +144,42 @@ const Login = () => {
                 disabled={loading}
               >
                 {loading ? <CircularProgress size={24} /> : 'Sign In'}
+              </Button>
+
+              <Divider sx={{ my: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  OR
+                </Typography>
+              </Divider>
+
+
+              {/* <script src="https://your-cdn.com/idp-widget/idp-widget.js"></script> 
+              <div id="idp-widget"></div> 
+              <script> 
+                    const widget = new IdPWidget({
+                        containerId: 'idp-widget',
+                        apiBaseUrl: 'https://your-idp.com/api',
+                        clientId: 'your-client-id',
+                        onSuccess: (user, tokens) => {
+                            // Handle successful authentication 
+                            console.log('User logged in:', user);
+                        }, onError: (error) => {
+                            // Handle authentication errors 
+                            console.error('Auth error:', error);
+                        }
+                    }); 
+                </script>
+               */}
+              
+              <Button
+                fullWidth
+                variant="outlined"
+                startIcon={<Security />}
+                onClick={handleIdpLogin}
+                sx={{ mb: 2 }}
+                disabled={loading}
+              >
+                Sign In with Identity Provider
               </Button>
             </Box>
 
